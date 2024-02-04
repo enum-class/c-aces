@@ -21,7 +21,7 @@ uint64_t coef_sum(const Polynomial *);
 
 uint64_t poly_degree(const Polynomial *);
 
-int poly_fit(uint64_t mod);
+int poly_fit(const Polynomial *poly, uint64_t mod);
 
 int poly_mul(const Polynomial *poly1, const Polynomial *poly2,
              Polynomial *result);
