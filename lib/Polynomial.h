@@ -24,16 +24,16 @@ uint64_t poly_degree(const Polynomial *);
 int poly_fit(const Polynomial *poly, uint64_t mod);
 
 int poly_mul(const Polynomial *poly1, const Polynomial *poly2,
-             Polynomial *result);
+             Polynomial *result, uint64_t mod);
 
 int poly_add(const Polynomial *poly1, const Polynomial *poly2,
-             Polynomial *result);
+             Polynomial *result, uint64_t mod);
 
 int poly_lshift(const Polynomial *poly1, const Polynomial *poly2,
-                Polynomial *result);
+                Polynomial *result, uint64_t mod);
 
 int poly_mod(const Polynomial *poly1, const Polynomial *poly2,
-             Polynomial *result);
+             Polynomial *result, uint64_t mod);
 
 #ifdef __cplusplus
 }

@@ -35,10 +35,11 @@ int generate_u(const Channel *channel, const Parameters *param, Polynomial *u) {
                             normal_rand(param->dim / 2, param->dim / 2));
   uint64_t zeroes = param->dim - nonzeros;
   u->coeffs[0] = 1;
+  nonzeros--;
 
-  for (int i = 0; i < param->dim - 1; ++i) {
+  for (int i = 1; i < param->dim - 1;) {
     if (nonzeros > 1) {
-      u->coeffs[i] = randrange(0, param->q);
+      u->coeffs[i++] = randrange(0, param->q);
       nonzeros--;
     }
 
@@ -53,15 +54,33 @@ int generate_u(const Channel *channel, const Parameters *param, Polynomial *u) {
 
   u->coeffs[param->dim - 1] = 0;
   u->coeffs[param->dim - 1] = param->q - sum(u);
+  return 0;
 }
 
 int generate_secret(const Channel *channel, const Parameters *param,
-                    const Polynomial *u, PolyArray *secret, Lambda *lambda);
+                    const Polynomial *u, PolyArray *secret, Lambda *lambda)
+{
 
-int generate_f0(const Channel *channel, const Parameters *param, PolyArray *f0);
+}
+
+int generate_f0(const Channel *channel, const Parameters *param, PolyArray *f0)
+{
+    for (int i = 0; i < f0->size; ++i)
+    {
+        for (int j = 0; j < f0[i]->size; j++)
+            f0[i]->coeffs[j] = q1 * randrange(0, channel->q) % channel->q;
+        
+        int shift_idx = randrange(0, f0[i]->size);
+        f0[i]->coeffs[shift_idx] = (f0[i]->coeffs[shift_idx] - sum(f0[i])) % channel->q; 
+    }
+
+    return 0;
+}
 
 int generate_f1(const Channel *channel, const Parameters *param,
-                const Polynomial *, Polynomial *f1);
+                const Polynomial *, Polynomial *f1)
+{
+}
 
 #ifdef __cplusplus
 }

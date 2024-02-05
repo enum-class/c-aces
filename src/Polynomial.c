@@ -36,23 +36,23 @@ int poly_fit(const Polynomial *poly, uint64_t mod) {
 }
 
 int poly_mul(const Polynomial *poly1, const Polynomial *poly2,
-             Polynomial *result) {
+             Polynomial *result, uint64_t mod) {
   // TODO: check
 
   for (int i = 0; i < poly->size; ++i)
-    result->coeffs[i] = poly1->coeffs[i] * poly2->coeffs[i];
+    result->coeffs[i] = poly1->coeffs[i] * poly2->coeffs[i] % mod;
   return 0;
 }
 
 int poly_add(const Polynomial *poly1, const Polynomial *poly2,
              Polynomial *result) {
   for (int i = 0; i < poly->size; ++i)
-    result->coeffs[i] = poly1->coeffs[i] + poly2->coeffs[i];
+    result->coeffs[i] = poly1->coeffs[i] + poly2->coeffs[i] % mod;
   return 0;
 }
 
 int poly_lshift(const Polynomial *poly1, const Polynomial *poly2,
-                Polynomial *result) {
+                Polynomial *result, uint64_t mod) {
   if (poly2->coeffs[0] != 1)
     return -1;
 
@@ -66,7 +66,7 @@ int poly_lshift(const Polynomial *poly1, const Polynomial *poly2,
 
   for (int i = 0; i < poly1->size; ++i) {
     if (i < poly2->size)
-      result[i] = poly1->coeffs[i] - poly2->coeffs[i] * a_d;
+      result[i] = (poly1->coeffs[i] - poly2->coeffs[i] * a_d) % mod;
     else
       result[i] = poly1->coeffs[i];
   }
@@ -74,7 +74,7 @@ int poly_lshift(const Polynomial *poly1, const Polynomial *poly2,
   return 0;
 }
 
-int poly_mod(const Polynomial *poly1, const Polynomial *poly2) {
-  while (poly_lshift(poly1, poly2, poly1) == 0) {
+int poly_mod(const Polynomial *poly1, const Polynomial *poly2, uint64_t mod) {
+  while (poly_lshift(poly1, poly2, poly1, mod) == 0) {
   }
 }
