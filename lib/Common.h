@@ -12,7 +12,12 @@ typename struct {
   int64_t b;
 } Xgcd;
 
+uint64_t gcd(uint64_t x, uint64_t y);
+
 Xgcd xgcd(uint64_t a, uint64_t b);
+
+int are_coprime(uint64_t x, uint64_t y);
+
 randinverse(uint64_t value);
 factors(uint64_t value);
 

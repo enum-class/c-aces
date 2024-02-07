@@ -1,5 +1,9 @@
 #include "Common.h"
 
+uint64_t normal_rand(double mean, double stddev) {
+  // TODO:
+}
+
 uint64_t gcd(uint64_t x, uint64_t y) {
   while (x != y) {
     if (x > y)
@@ -49,4 +53,8 @@ randinverse(uint64_t value) {
   Xgcd result = xgcd(a, value);
 
   return a, result.a;
+}
+
+factors(uint64_t value) {
+  // TODO:
 }
