@@ -10,39 +10,37 @@ extern "C" {
 
 #define EPROB 0.5
 
-typename struct {
+typedef struct {
   Polynomial u;
   Lambda lambda;
 } PublicKey;
 
-typename struct {
+typedef struct {
   PolyArray x;
   PolyArray f0;
   Polynomial f1;
 } PrivateKey;
 
-typename struct {
+typedef struct {
   Channel channel;
   Parameters param;
   PublicKey pk;
 } SharedInfo;
 
-typename struct {
+typedef struct {
   SharedInfo info;
   PrivateKey privte_key;
 } Aces;
 
-typename struct {
+typedef struct {
   PolyArray c1;
   Polynomial c2;
   uint64_t level;
 } CipherMessage;
 
-int aces_encrypt(const Aces *aces, const uint64_t *message, size_t size,
-                 CipherMessage *result);
+int aces_encrypt(const Aces *, const uint64_t *, size_t, CipherMessage *);
 
-int aces_decrypt(const Aces *aces, const CipherMessage *message, size_t size,
-                 uint64_t *message);
+int aces_decrypt(const Aces *, const CipherMessage *, size_t size, uint64_t *);
 
 #ifdef __cplusplus
 }

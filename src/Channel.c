@@ -1,3 +1,5 @@
+#include "Channel.h"
+
 int init_channel(Channel *channel, uint64_t p, uint64_t q, uint64_t w) {
   channel->w = w;
   channel->p = p;

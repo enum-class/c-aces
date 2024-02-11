@@ -1,13 +1,15 @@
 #ifndef OPERATIONS_H
 #define OPERATIONS_H
 
-int aces_add(const CipherMessage *a, const CipherMessage *b,
-             const SharedInfo *info, CipherMessage *result);
+#include "Aces.h"
 
-int aces_mul(const CipherMessage *a, const CipherMessage *b,
-             const SharedInfo *info, CipherMessage *result);
+int aces_add(const CipherMessage *, const CipherMessage *, const SharedInfo *,
+             CipherMessage *);
 
-int aces_refresh(CipherMessage *a, uint64_t k);
+int aces_mul(const CipherMessage *, const CipherMessage *, const SharedInfo *,
+             CipherMessage *);
+
+int aces_refresh(CipherMessage *, uint64_t);
 
 #ifdef __cplusplus
 }

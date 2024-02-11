@@ -1,0 +1,11 @@
+find_package(Threads REQUIRED)
+
+set(TESTS_SOURCES
+    polynomial-test.c
+)
+
+add_executable(run_test ${TESTS_SOURCES})
+target_link_libraries(run_test PRIVATE
+    CAces
+    Threads::Threads
+)

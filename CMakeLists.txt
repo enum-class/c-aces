@@ -19,7 +19,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS On)
 add_compile_options(-Wall -Wextra -pedantic -Werror)
 
 set(SOURCE_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/Aces.c
+    #${CMAKE_CURRENT_SOURCE_DIR}/src/Aces.c
+    #${CMAKE_CURRENT_SOURCE_DIR}/src/Channel.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Common.c
+    #${CMAKE_CURRENT_SOURCE_DIR}/src/Operations.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Polynomial.c
 )
 
 add_library(CAces STATIC ${SOURCE_FILES})
@@ -36,7 +40,7 @@ if (CACES_BENCHMARK)
     add_subdirectory(benchmarks)
 endif()
 
-if (CACES_TESTS)
+if (CACES_TEST)
     add_subdirectory(tests)
 endif()
 

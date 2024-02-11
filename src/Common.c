@@ -1,7 +1,12 @@
 #include "Common.h"
 
+#include <stdlib.h>
+
 uint64_t normal_rand(double mean, double stddev) {
   // TODO:
+  (void)mean;
+  (void)stddev;
+  return 0;
 }
 
 uint64_t gcd(uint64_t x, uint64_t y) {
@@ -12,7 +17,7 @@ uint64_t gcd(uint64_t x, uint64_t y) {
       y -= x;
   }
 
-  return n1;
+  return x;
 }
 
 Xgcd xgcd(uint64_t x, uint64_t y) {
@@ -36,7 +41,8 @@ Xgcd xgcd(uint64_t x, uint64_t y) {
     prev_b = temp;
   }
 
-  return Xgcd{x, prev_a, prev_b};
+  Xgcd result = {.gcd = x, .a = prev_a, .b = prev_b};
+  return result;
 }
 
 int are_coprime(uint64_t x, uint64_t y) { return !(gcd(x, y) > 1); }
@@ -45,16 +51,17 @@ uint64_t randrange(uint64_t lower, uint64_t upper) {
   return (rand() % (upper - lower + 1)) + lower;
 }
 
-randinverse(uint64_t value) {
+Pair randinverse(uint64_t value) {
   uint64_t a = randrange(2, value - 1);
   while (!are_coprime(a, value))
     a = randrange(2, value - 1);
 
   Xgcd result = xgcd(a, value);
 
-  return a, result.a;
+  Pair p = {.first = a, .second = result.a};
+  return p;
 }
 
-factors(uint64_t value) {
-  // TODO:
-}
+// factors(uint64_t value) {
+//   // TODO:
+// }
