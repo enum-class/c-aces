@@ -41,6 +41,14 @@ static inline uint64_t clamp(uint64_t min_value, uint64_t max_value,
   return max(min_value, min(max_value, value));
 }
 
+int fill_inv_random(size_t dim, uint64_t m[dim][dim], inv_m[dim][dim]);
+
+int random_swap_transform(size_t dim, uint64_t m[dim][dim]) {}
+
+int random_multiply_transform(size_t dim, uint64_t m[dim][dim]) {}
+
+int random_linear_transform(size_t dim, uint64_t m[dim][dim]) {}
+
 #ifdef __cplusplus
 }
 #endif

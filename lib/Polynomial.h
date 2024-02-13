@@ -8,7 +8,7 @@ extern "C" {
 #include <stddef.h>
 #include <stdint.h>
 
-typedef uint64_t Coeff;
+typedef int64_t Coeff;
 
 typedef struct {
   Coeff *coeffs;
@@ -31,7 +31,7 @@ int get_polyarray(PolyArray *p, size_t size);
 
 int set_zero(const Polynomial *);
 
-uint64_t coef_sum(const Polynomial *);
+int64_t coef_sum(const Polynomial *);
 
 uint64_t poly_degree(const Polynomial *);
 

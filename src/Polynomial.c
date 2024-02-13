@@ -36,11 +36,11 @@ int set_zero(const Polynomial *p) {
   return 0;
 }
 
-uint64_t coef_sum(const Polynomial *poly) {
+int64_t coef_sum(const Polynomial *poly) {
   if (!poly || poly->size == 0)
     return 0;
 
-  uint64_t sum = 0;
+  int64_t sum = 0;
   for (size_t i = 0; i < poly->size; ++i)
     sum += poly->coeffs[i];
 
@@ -128,13 +128,13 @@ int poly_lshift(const Polynomial *poly1, const Polynomial *poly2,
   if (degree1 < degree2)
     return -1;
 
-  uint64_t a_d = poly1->coeffs[0];
+  Coeff a_d = poly1->coeffs[0];
 
   for (size_t i = 0; i < poly1->size; ++i) {
     if (i < poly2->size) {
       int64_t res =
           (int64_t)(poly1->coeffs[i] - poly2->coeffs[i] * a_d) % (int64_t)mod;
-      result->coeffs[i] = res < 0 ? res + mod : (uint64_t)res;
+      result->coeffs[i] = res < 0 ? res + mod : (Coeff)res;
     } else
       result->coeffs[i] = poly1->coeffs[i];
   }

@@ -2,6 +2,8 @@ find_package(Threads REQUIRED)
 
 set(TESTS_SOURCES
     polynomial-test.c
+    channel-test.c
+    main-test.c
 )
 
 add_executable(run_test ${TESTS_SOURCES})

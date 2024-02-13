@@ -4,7 +4,6 @@
 #include <Polynomial.h>
 
 #include <assert.h>
-#include <stdio.h>
 
 void set_zero_and_check(const Polynomial *poly) {
   set_zero(poly);
@@ -192,12 +191,12 @@ int poly_lshift_test_2() {
   return 1;
 }
 
-int main() {
+int run_polynomial_tests() {
   assert(set_zero_test());
   assert(poly_degree_test());
   assert(poly_add_test());
   assert(poly_mul_test());
   assert(poly_lshift_test_1());
   assert(poly_lshift_test_2());
-  return 0;
+  return 1;
 }

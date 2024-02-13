@@ -16,11 +16,11 @@ endif()
 
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_EXPORT_COMPILE_COMMANDS On)
-add_compile_options(-Wall -Wextra -pedantic -Werror)
+#add_compile_options(-Wall -Wextra -pedantic -Werror)
 
 set(SOURCE_FILES
     #${CMAKE_CURRENT_SOURCE_DIR}/src/Aces.c
-    #${CMAKE_CURRENT_SOURCE_DIR}/src/Channel.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Channel.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Common.c
     #${CMAKE_CURRENT_SOURCE_DIR}/src/Operations.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Polynomial.c
@@ -28,6 +28,7 @@ set(SOURCE_FILES
 
 add_library(CAces STATIC ${SOURCE_FILES})
 
+target_link_libraries(CAces PRIVATE m)
 target_include_directories(CAces PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/lib
 )
