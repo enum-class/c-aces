@@ -2,8 +2,6 @@
 
 #include <math.h>
 
-#include "Common.h"
-
 int init_channel(Channel *channel, uint64_t p, uint64_t q, uint64_t w) {
   channel->w = w;
   channel->p = p;
@@ -14,6 +12,8 @@ int init_channel(Channel *channel, uint64_t p, uint64_t q, uint64_t w) {
 
   return 0;
 }
+
+Matrix2D *lambda_get(Lambda *lambda, size_t idx) { return &lambda->data[idx]; }
 
 int generate_u(const Channel *channel, const Parameters *param, Polynomial *u) {
   uint64_t nonzeros = randrange(
@@ -48,17 +48,46 @@ int generate_u(const Channel *channel, const Parameters *param, Polynomial *u) {
 
 int generate_secret(const Channel *channel, const Parameters *param,
                     const Polynomial *u, PolyArray *secret, Lambda *lambda) {
-  uint64_t m[param.dim][param.dim];
-  uint64_t inv_m[param.dim][param.dim];
-  fill_inv_random(m, inv_m, param.dim);
-  //
-  //  for (int i = 0; i < secret->size; ++i) {
-  //    for (int j = 0; j < secret[i]->size; ++j) {
-  //      secret[i][j] = m[j][i];
-  //    }
-  //  }
+  Matrix2D m;
+  Matrix2D invm;
 
-  // TODO:
+  m.dim = param->dim;
+  invm.dim = param->dim;
+
+  size_t required_mem = m.dim * m.dim;
+  uint64_t mem[2 * required_mem];
+  m.data = mem;
+  invm.data = mem + required_mem;
+
+  fill_random_invertible_pairs(&m, &invm, channel->q, 600);
+
+  secret->size = m.dim;
+  for (int i = 0; i < m.dim; ++i) {
+    for (int j = 0; j < m.dim; ++j) {
+      secret->polies[i].coeffs[j] = matrix2d_get(&m, j, i); // m[j][i];
+    }
+  }
+
+  Matrix2D *arr = &m;
+  Polynomial a_ij_poly; // TODO:
+
+  Coeff miim[2 * secret->size];
+
+  for (int i = 0; i < secret->size; ++i) {
+    for (int j = 0; j < secret->size; ++j) {
+      set_polynomial(&a_ij_poly, miim, 2 * secret->size);
+      poly_mul(&secret->polies[i], &secret->polies[j], &a_ij_poly, channel->q);
+      poly_mod(&a_ij_poly, u, channel->q);
+
+      for (int row = 0; row < arr->dim; row++) {
+        matrix2d_set(arr, row, j, a_ij_poly.coeffs[arr->dim - row - 1]);
+      }
+    }
+
+    matrix2d_multiply(&invm, arr, lambda_get(lambda, i), channel->q);
+  }
+
+  return 0;
 }
 
 int generate_f0(const Channel *channel, const Parameters *param,

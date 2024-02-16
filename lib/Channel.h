@@ -1,6 +1,7 @@
 #ifndef CHANNEL_H
 #define CHANNEL_H
 
+#include "Common.h"
 #include "Polynomial.h"
 
 typedef struct {
@@ -15,9 +16,11 @@ typedef struct {
 } Channel;
 
 typedef struct {
-  uint64_t ***lambda;
-  size_t size[3];
+  Matrix2D *data;
+  size_t size;
 } Lambda;
+
+Matrix2D *lambda_get(Lambda *lambda, size_t idx);
 
 int init_channel(Channel *, uint64_t, uint64_t, uint64_t);
 

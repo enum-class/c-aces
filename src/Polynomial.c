@@ -139,6 +139,7 @@ int poly_lshift(const Polynomial *poly1, const Polynomial *poly2,
       result->coeffs[i] = poly1->coeffs[i];
   }
 
+  poly_fit(result, mod);
   return 0;
 }
 

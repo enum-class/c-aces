@@ -4,7 +4,6 @@
 #include <Polynomial.h>
 
 #include <assert.h>
-#include <stdio.h>
 
 int generate_u_test() {
   Polynomial u;
@@ -41,18 +40,48 @@ int generate_f0_test() {
   param.dim = 10;
 
   generate_f0(&channel, &param, &f0);
-  for (int i = 0; i < 10; i++) {
-    for (int j = 0; j < 10; j++) {
-      printf("%ld\t", f0.polies[i].coeffs[j]);
-    }
-    printf("\n");
-  }
 
+  return 1;
+}
+
+int generate_secret_test() {
+  Channel channel;
+  init_channel(&channel, 2, 33, 1);
+
+  Parameters param;
+  param.dim = 10;
+
+  Coeff mem_u[11];
+  Polynomial u;
+  set_polynomial(&u, mem_u, 11);
+  set_zero(&u);
+  generate_u(&channel, &param, &u);
+
+  Polynomial polies[10];
+  Coeff mem_secret[10][10];
+  for (int i = 0; i < 10; ++i)
+    set_polynomial(&polies[i], mem_secret[i], 10);
+  PolyArray secret;
+  secret.size = 10;
+  secret.polies = polies;
+
+  Matrix2D data[10];
+  uint64_t mem_lambda[10][100];
+  for (int i = 0; i < 10; ++i) {
+    data[i].data = mem_lambda[i];
+    data[i].dim = 10;
+  }
+  Lambda lambda;
+  lambda.size = 10;
+  lambda.data = data;
+
+  generate_secret(&channel, &param, &u, &secret, &lambda);
   return 1;
 }
 
 int run_channel_tests() {
   assert(generate_u_test());
   assert(generate_f0_test());
+  assert(generate_secret_test());
   return 1;
 }

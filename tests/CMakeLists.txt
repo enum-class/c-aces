@@ -3,6 +3,7 @@ find_package(Threads REQUIRED)
 set(TESTS_SOURCES
     polynomial-test.c
     channel-test.c
+    common-test.c
     main-test.c
 )
 
