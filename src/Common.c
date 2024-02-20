@@ -1,13 +1,35 @@
 #include "Common.h"
 
+#include <math.h>
 #include <stdlib.h>
-#include <string.h>
 
-uint64_t normal_rand(double mean, double stddev) {
-  // TODO:
-  (void)mean;
-  (void)stddev;
-  return 0;
+#define PI 3.14159265
+
+static double rand_val() { return (double)rand() / (double)RAND_MAX; }
+
+double normal_rand(double mean, double stddev) {
+  double u, r, theta; // Variables for Box-Muller method
+  double x;           // Normal(0, 1) rv
+  double norm_rv;     // The adjusted normal rv
+
+  // Generate u
+  u = 0.0;
+  while (u == 0.0)
+    u = rand_val();
+
+  r = sqrt(-2.0 * log(u));
+
+  // Generate theta
+  theta = 0.0;
+  while (theta == 0.0)
+    theta = 2.0 * PI * rand_val();
+
+  x = r * cos(theta);
+
+  // Adjust x value for specified mean and variance
+  norm_rv = (x * stddev) + mean;
+
+  return norm_rv;
 }
 
 uint64_t gcd(uint64_t x, uint64_t y) {
@@ -59,100 +81,8 @@ Pair randinverse(uint64_t value) {
 
   Xgcd result = xgcd(a, value);
 
-  Pair p = {.first = a, .second = result.a > 0 ? result.a : result.a + value};
+  Pair p = {.first = a,
+            .second = result.a > 0 ? (uint64_t)result.a
+                                   : (uint64_t)(result.a + (int64_t)value)};
   return p;
-}
-
-int matrix2d_multiply(Matrix2D *m, Matrix2D *invm, Matrix2D *result,
-                      uint64_t mod) {
-  size_t dim = m->dim;
-  for (int i = 0; i < dim; i++) {
-    for (int j = 0; j < dim; j++) {
-      matrix2d_set(result, i, j, 0);
-      for (int k = 0; k < dim; k++) {
-        matrix2d_set(result, i, j,
-                     matrix2d_get(result, i, j) +
-                         matrix2d_get(m, i, k) * matrix2d_get(invm, k, j));
-      }
-      matrix2d_set(result, i, j, matrix2d_get(result, i, j) % mod);
-    }
-  }
-
-  return 0;
-}
-
-int swap_transform(Matrix2D *m, Matrix2D *invm, uint64_t mod) {
-  size_t dim = m->dim;
-  uint64_t tmp;
-  uint64_t tmp_row[dim];
-
-  size_t source = randrange(1, dim - 1);
-  size_t target = randrange(0, source - 1);
-
-  for (size_t row = 0; row < dim; ++row) {
-    tmp = matrix2d_get(m, row, source);
-    matrix2d_set(m, row, source, matrix2d_get(m, row, target));
-    matrix2d_set(m, row, target, tmp);
-  }
-
-  memcpy(tmp_row, matrix2d_row(invm, source), sizeof(uint64_t) * dim);
-  memcpy(matrix2d_row(invm, source), matrix2d_row(invm, target),
-         sizeof(uint64_t) * dim);
-  memcpy(matrix2d_row(invm, target), tmp_row, sizeof(uint64_t) * dim);
-
-  return 0;
-}
-
-int scale_transform(Matrix2D *m, Matrix2D *invm, uint64_t mod) {
-  size_t dim = m->dim;
-  Pair scale = randinverse(mod);
-  for (size_t idx = 0; idx < dim * dim; ++idx) {
-    m->data[idx] = (m->data[idx] * scale.first) % mod;
-    invm->data[idx] = (invm->data[idx] * scale.second) % mod;
-  }
-  return 1;
-}
-
-int linear_mix_transform(Matrix2D *m, Matrix2D *invm, uint64_t mod) {
-  size_t dim = m->dim;
-  size_t scale = randrange(1, mod - 1);
-  size_t source = randrange(1, dim - 1);
-  size_t target = randrange(0, source - 1);
-
-  for (size_t row = 0; row < dim; ++row) {
-    matrix2d_set(
-        m, row, target,
-        (matrix2d_get(m, row, target) + matrix2d_get(m, row, source) * scale) %
-            mod);
-    matrix2d_set(invm, source, row,
-                 (matrix2d_get(invm, source, row) +
-                  matrix2d_get(invm, target, row) * (mod - scale)) %
-                     mod);
-  }
-
-  return 0;
-}
-
-int matrix2d_eye(Matrix2D *m) {
-  size_t dim = m->dim;
-  memset(m->data, 0, dim * dim * sizeof(uint64_t));
-
-  for (size_t row = 0; row < dim; ++row)
-    matrix2d_set(m, row, row, 1);
-
-  return 0;
-}
-
-int fill_random_invertible_pairs(Matrix2D *m, Matrix2D *invm, uint64_t mod,
-                                 size_t iterations) {
-  const Transformer transformers[TRANSFORM_COUNT] = {
-      &swap_transform, &scale_transform, &linear_mix_transform};
-
-  matrix2d_eye(m);
-  matrix2d_eye(invm);
-
-  for (int i = 0; i < iterations; ++i) {
-    size_t select = randrange(0, TRANSFORM_COUNT - 1);
-    transformers[select](m, invm, mod);
-  }
 }

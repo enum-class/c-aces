@@ -1,5 +1,6 @@
-#include "channel-test.h"
+#include "aces-internal-test.h"
 
+#include <Aces-internal.h>
 #include <Channel.h>
 #include <Polynomial.h>
 
@@ -71,7 +72,7 @@ int generate_secret_test() {
     data[i].data = mem_lambda[i];
     data[i].dim = 10;
   }
-  Lambda lambda;
+  Matrix3D lambda;
   lambda.size = 10;
   lambda.data = data;
 
@@ -79,7 +80,7 @@ int generate_secret_test() {
   return 1;
 }
 
-int run_channel_tests() {
+int run_aces_internal_tests() {
   assert(generate_u_test());
   assert(generate_f0_test());
   assert(generate_secret_test());

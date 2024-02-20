@@ -1,11 +1,11 @@
-#ifndef CHANNEL_TEST_H
-#define CHANNEL_TEST_H
+#ifndef MATRIX_TEST_H
+#define MATRIX_TEST_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-int run_channel_tests();
+int run_matrix_tests();
 
 #ifdef __cplusplus
 }

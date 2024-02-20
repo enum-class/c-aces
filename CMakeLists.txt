@@ -19,10 +19,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS On)
 #add_compile_options(-Wall -Wextra -pedantic -Werror)
 
 set(SOURCE_FILES
-    #${CMAKE_CURRENT_SOURCE_DIR}/src/Aces.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Aces.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Aces-internal.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Channel.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Matrix.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Common.c
-    #${CMAKE_CURRENT_SOURCE_DIR}/src/Operations.c
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Polynomial.c
 )
 

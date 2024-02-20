@@ -134,7 +134,7 @@ int poly_lshift(const Polynomial *poly1, const Polynomial *poly2,
     if (i < poly2->size) {
       int64_t res =
           (int64_t)(poly1->coeffs[i] - poly2->coeffs[i] * a_d) % (int64_t)mod;
-      result->coeffs[i] = res < 0 ? res + mod : (Coeff)res;
+      result->coeffs[i] = res < 0 ? (Coeff)(res + (int64_t)mod) : (Coeff)res;
     } else
       result->coeffs[i] = poly1->coeffs[i];
   }

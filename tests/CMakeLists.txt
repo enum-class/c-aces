@@ -2,8 +2,9 @@ find_package(Threads REQUIRED)
 
 set(TESTS_SOURCES
     polynomial-test.c
-    channel-test.c
+    aces-internal-test.c
     common-test.c
+    matrix-test.c
     main-test.c
 )
 
