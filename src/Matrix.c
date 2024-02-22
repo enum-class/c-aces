@@ -24,8 +24,7 @@ int matrix2d_multiply(Matrix2D *m, Matrix2D *invm, Matrix2D *result,
   return 0;
 }
 
-int swap_transform(Matrix2D *m, Matrix2D *invm, uint64_t mod) {
-  (void)mod;
+int swap_transform(Matrix2D *m, Matrix2D *invm, MAYBE_UNUSED uint64_t mod) {
   size_t dim = m->dim;
   uint64_t tmp;
   uint64_t tmp_row[dim];

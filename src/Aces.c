@@ -36,11 +36,10 @@ int aces_encrypt(const Aces *aces, const uint64_t *message, size_t size,
   set_polynomial(&e, mem + dim, dim);
   set_polynomial(&b, mem + 2 * dim, dim);
 
-  generate_error(aces->shared_info.channel.q, dim, *message, &r_m);
+  generate_error(aces->shared_info.channel.q, *message, &r_m);
   generate_vanisher(aces->shared_info.channel.p, aces->shared_info.channel.q,
-                    dim, &e);
-  generate_linear(aces->shared_info.channel.p, aces->shared_info.channel.q, dim,
-                  &b);
+                    &e);
+  generate_linear(aces->shared_info.channel.p, aces->shared_info.channel.q, &b);
 
   Coeff tmp_mem[2 * dim];
   Polynomial tmp;
@@ -112,6 +111,7 @@ int aces_add(const CipherMessage *a, const CipherMessage *b,
 
 int aces_mul(const CipherMessage *a, const CipherMessage *b,
              const SharedInfo *info, CipherMessage *result) {
+  // TODO: Implement it
   (void)a;
   (void)b;
   (void)info;

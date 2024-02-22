@@ -3,8 +3,7 @@
 
 #include <string.h>
 
-int generate_error(uint64_t q, uint64_t dim, uint64_t message, Polynomial *rm) {
-  (void)dim;
+int generate_error(uint64_t q, uint64_t message, Polynomial *rm) {
   for (size_t i = 0; i < rm->size; ++i)
     rm->coeffs[i] = randrange(0, q);
 
@@ -15,9 +14,7 @@ int generate_error(uint64_t q, uint64_t dim, uint64_t message, Polynomial *rm) {
   return 0;
 }
 
-uint64_t generate_vanisher(uint64_t p, uint64_t q, uint64_t dim,
-                           Polynomial *e) {
-  (void)dim;
+uint64_t generate_vanisher(uint64_t p, uint64_t q, Polynomial *e) {
   int64_t k = randrange(0, 1) < EPROB ? 0 : 1;
   for (size_t i = 0; i < e->size; ++i)
     e->coeffs[i] = randrange(0, q);
@@ -28,8 +25,7 @@ uint64_t generate_vanisher(uint64_t p, uint64_t q, uint64_t dim,
   return k;
 }
 
-uint64_t generate_linear(uint64_t p, uint64_t q, uint64_t dim, Polynomial *b) {
-  (void)dim;
+uint64_t generate_linear(uint64_t p, uint64_t q, Polynomial *b) {
   int64_t k = randrange(0, p);
   for (size_t i = 0; i < b->size; ++i)
     b->coeffs[i] = randrange(0, q);
@@ -112,7 +108,7 @@ int generate_secret(const Channel *channel, const Parameters *param,
 
 int generate_f0(const Channel *channel, const Parameters *param,
                 PolyArray *f0) {
-  (void)param;
+  (void)param; // TODO: we need to consider N
   for (size_t i = 0; i < f0->size; ++i) {
     for (size_t j = 0; j < f0->polies[i].size; j++)
       f0->polies[i].coeffs[j] = randrange(0, channel->q - 1);

@@ -20,14 +20,13 @@ extern "C" {
  * such that its evaluation in Zq at the integer ω equals 'message'.
  *
  * @param q The modulus.
- * @param dim The dimension of the element.
  * @param message The message to encode in the error.
  * @param rm Pointer to the polynomial structure to store the generated error
  * element.
  *
  * @return 0 if successful.
  */
-int generate_error(uint64_t q, uint64_t dim, uint64_t message, Polynomial *rm);
+int generate_error(uint64_t q, uint64_t message, Polynomial *rm);
 
 /**
  * @brief Generate a vanisher vector 'e' over Zq[X]u.
@@ -38,13 +37,12 @@ int generate_error(uint64_t q, uint64_t dim, uint64_t message, Polynomial *rm);
  *
  * @param p The product factor.
  * @param q The modulus.
- * @param dim The dimension of the vector.
  * @param e Pointer to the polynomial structure to store the generated vanisher
  * vector.
  *
  * @return 0 if successful.
  */
-uint64_t generate_vanisher(uint64_t p, uint64_t q, uint64_t dim, Polynomial *e);
+uint64_t generate_vanisher(uint64_t p, uint64_t q, Polynomial *e);
 
 /**
  * @brief Generate a linear vector 'b' over Zq[X]u.
@@ -54,13 +52,12 @@ uint64_t generate_vanisher(uint64_t p, uint64_t q, uint64_t dim, Polynomial *e);
  *
  * @param p The upper bound for coefficients.
  * @param q The modulus.
- * @param dim The dimension of the vector.
  * @param b Pointer to the polynomial structure to store the generated linear
  * vector.
  *
  * @return 0 if successful.
  */
-uint64_t generate_linear(uint64_t p, uint64_t q, uint64_t dim, Polynomial *b);
+uint64_t generate_linear(uint64_t p, uint64_t q, Polynomial *b);
 
 /**
  * @brief Generate the polynomial 'u' for the arithmetic channel.

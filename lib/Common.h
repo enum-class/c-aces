@@ -8,6 +8,8 @@ extern "C" {
 #include <stddef.h>
 #include <stdint.h>
 
+#define MAYBE_UNUSED __attribute__((unused))
+
 /**
  * @brief Extended Euclidean Algorithm result.
  *
