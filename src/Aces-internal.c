@@ -1,6 +1,7 @@
 #include "Aces-internal.h"
 #include "Common.h"
-#include "Matrix.h"
+
+#include <string.h>
 
 int generate_error(uint64_t q, uint64_t dim, uint64_t message, Polynomial *rm) {
   (void)dim;
@@ -125,15 +126,24 @@ int generate_f1(const Channel *channel, const Parameters *param,
                 Polynomial *f1) {
   Polynomial tmp;
   Coeff mem[param->dim * 2];
-  set_polynomial(&tmp, mem, param->dim * 2);
 
-  set_zero(f1);
-  set_zero(&tmp);
+  Polynomial f_pre;
+  Coeff f_pre_mem[param->dim * 2];
+  set_polynomial(&f_pre, f_pre_mem, param->dim * 2);
+
+  set_zero(&f_pre);
 
   for (size_t i = 0; i < param->dim; ++i) {
+    set_polynomial(&tmp, mem, param->dim * 2);
     poly_mul(&f0->polies[i], &x->polies[i], &tmp, channel->q);
-    poly_add(f1, &tmp, f1, channel->q);
+    poly_add(&f_pre, &tmp, &f_pre, channel->q);
   }
-  poly_mod(f1, u, channel->q);
+  poly_mod(&f_pre, u, channel->q);
+
+  size_t diff = f1->size - f_pre.size;
+  f1->coeffs += diff;
+  f1->size -= diff;
+  memcpy(f1->coeffs, f_pre.coeffs, f_pre.size * sizeof(Coeff));
+
   return 0;
 }

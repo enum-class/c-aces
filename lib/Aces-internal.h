@@ -6,7 +6,9 @@ extern "C" {
 #endif
 
 #include "Channel.h"
+#include "Matrix.h"
 #include "Polynomial.h"
+
 #include <stdint.h>
 
 #define EPROB 0.5

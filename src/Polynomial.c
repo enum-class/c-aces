@@ -1,4 +1,5 @@
 #include "Polynomial.h"
+#include "Common.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -92,15 +93,28 @@ int poly_mul(const Polynomial *poly1, const Polynomial *poly2,
 
 int poly_equal(const Polynomial *poly1, const Polynomial *poly2) {
   if (poly1->size != poly2->size)
-    return -1;
+    return 0;
 
   return 0 == memcmp(poly1->coeffs, poly2->coeffs, poly1->size * sizeof(Coeff));
 }
 
 int poly_add(const Polynomial *poly1, const Polynomial *poly2,
              Polynomial *result, uint64_t mod) {
-  if (poly1->size != poly2->size || poly1->size > result->size || mod == 0)
+  if (poly1->size > result->size || poly2->size > result->size || mod == 0)
     return -1;
+
+  if (poly1->size != poly2->size) {
+    size_t size = result->size;
+    size_t diff1 = size - poly1->size;
+    size_t diff2 = size - poly2->size;
+
+    for (size_t i = 0; i < size; ++i) {
+      result->coeffs[i] = ((i >= diff1 ? poly1->coeffs[i - diff1] : 0) +
+                           (i >= diff2 ? poly2->coeffs[i - diff2] : 0)) %
+                          mod;
+    }
+    return 0;
+  }
 
   for (size_t i = 0; i < poly1->size; ++i)
     result->coeffs[i] = (poly1->coeffs[i] + poly2->coeffs[i]) % mod;
@@ -109,8 +123,21 @@ int poly_add(const Polynomial *poly1, const Polynomial *poly2,
 
 int poly_sub(const Polynomial *poly1, const Polynomial *poly2,
              Polynomial *result, uint64_t mod) {
-  if (poly1->size != poly2->size || poly1->size > result->size || mod == 0)
+  if (poly1->size > result->size || poly2->size > result->size || mod == 0)
     return -1;
+
+  if (poly1->size != poly2->size) {
+    size_t size = result->size;
+    size_t diff1 = size - poly1->size;
+    size_t diff2 = size - poly2->size;
+
+    for (size_t i = 0; i < size; ++i) {
+      result->coeffs[i] = ((i >= diff1 ? poly1->coeffs[i - diff1] : 0) -
+                           (i >= diff2 ? poly2->coeffs[i - diff2] : 0)) %
+                          mod;
+    }
+    return 0;
+  }
 
   for (size_t i = 0; i < poly1->size; ++i)
     result->coeffs[i] = (poly1->coeffs[i] - poly2->coeffs[i]) % mod;

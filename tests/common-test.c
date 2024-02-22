@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#define MAYBE_UNUSED __attribute__((unused))
+
 int gcd_test() {
   assert(1ULL == gcd(1, 1));
   assert(1ULL == gcd(2, 1));
@@ -19,7 +21,7 @@ int gcd_test() {
 }
 
 int xgcd_test() {
-  Xgcd result;
+  MAYBE_UNUSED Xgcd result;
 
   result = xgcd(7, 7);
   assert(result.gcd == 7);

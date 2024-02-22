@@ -1,9 +1,7 @@
 #ifndef CHANNEL_H
 #define CHANNEL_H
 
-#include "Common.h"
-#include "Matrix.h"
-#include "Polynomial.h"
+#include <stdint.h>
 
 typedef struct {
   uint64_t dim;

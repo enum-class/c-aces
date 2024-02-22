@@ -1,4 +1,5 @@
 #include "Channel.h"
+#include "Common.h"
 
 #include <math.h>
 

@@ -16,7 +16,7 @@ endif()
 
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_EXPORT_COMPILE_COMMANDS On)
-#add_compile_options(-Wall -Wextra -pedantic -Werror)
+add_compile_options(-Wall -Wextra -pedantic -Werror)
 
 set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Aces.c
@@ -36,7 +36,7 @@ target_include_directories(CAces PUBLIC
 
 option(CACES_BENCHMARK "Enable benchmarking" OFF)
 option(CACES_TEST "Enable tests" OFF)
-option(CACES_EXAMPLES "Enable examples" OFF)
+option(CACES_EXAMPLE "Enable examples" OFF)
 
 if (CACES_BENCHMARK)
     add_subdirectory(benchmarks)
@@ -46,7 +46,7 @@ if (CACES_TEST)
     add_subdirectory(tests)
 endif()
 
-if (CACES_EXAMPLES)
+if (CACES_EXAMPLE)
     add_subdirectory(examples)
 endif()
 

@@ -6,6 +6,7 @@ extern "C" {
 #endif
 
 #include "Channel.h"
+#include "Matrix.h"
 #include "Polynomial.h"
 
 /**
