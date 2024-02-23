@@ -4,6 +4,67 @@
 
 #include <string.h>
 
+int set_aces(Aces *aces, size_t dim, void *memory, size_t size) {
+  size_t required = sizeof(Coeff) * (2 * dim + 1 + 2 * dim * dim) +
+                    sizeof(Matrix2D) * dim + sizeof(Polynomial) * 2 * dim +
+                    sizeof(uint64_t) * dim * dim * dim;
+
+  if (size < required)
+    return -1;
+
+  uint8_t *mem = (uint8_t *)memory;
+  // initialize U
+  Coeff *u_mem = (Coeff *)mem;
+  mem += ((dim + 1) * sizeof(Coeff));
+  set_polynomial(&aces->shared_info.pk.u, u_mem, dim + 1);
+
+  // initialize lambda
+  Matrix2D *lambda_mat = (Matrix2D *)mem;
+  mem += dim * sizeof(Matrix2D);
+
+  uint64_t *lambda_mem = (uint64_t *)mem;
+  mem += dim * dim * dim * sizeof(uint64_t);
+
+  for (size_t i = 0; i < dim; ++i) {
+    lambda_mat[i].dim = dim;
+    lambda_mat[i].data = lambda_mem + (i * dim * dim);
+  }
+  aces->shared_info.pk.lambda.size = dim;
+  aces->shared_info.pk.lambda.data = lambda_mat;
+
+  // initialize x
+  Polynomial *x_polies = (Polynomial *)mem;
+  mem += dim * sizeof(Polynomial);
+
+  Coeff *x_mem = (Coeff *)mem;
+  mem += dim * dim * sizeof(Coeff);
+
+  for (size_t i = 0; i < dim; ++i) {
+    set_polynomial(&x_polies[i], x_mem + i * dim, dim);
+  }
+  aces->private_key.x.size = dim;
+  aces->private_key.x.polies = x_polies;
+
+  // initialize f0
+  Polynomial *f0_polies = (Polynomial *)mem;
+  mem += dim * sizeof(Polynomial);
+
+  Coeff *f0_mem = (Coeff *)mem;
+  mem += dim * dim * sizeof(Coeff);
+  for (size_t i = 0; i < dim; ++i) {
+    set_polynomial(&f0_polies[i], f0_mem + i * dim, dim);
+  }
+  aces->private_key.f0.size = dim;
+  aces->private_key.f0.polies = f0_polies;
+
+  // initialize f1
+  Coeff *f1_mem = (Coeff *)mem;
+  mem += dim * sizeof(Coeff);
+  set_polynomial(&aces->private_key.f1, f1_mem, dim);
+
+  return 0;
+}
+
 int init_aces(uint64_t p, uint64_t q, uint64_t dim, Aces *aces) {
   aces->shared_info.param.dim = dim;
   aces->shared_info.param.N = 1;

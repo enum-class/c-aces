@@ -105,6 +105,8 @@ typedef struct {
   uint64_t level;
 } CipherMessage;
 
+int set_aces(Aces *aces, size_t dim, void *mem, size_t size);
+
 /**
  * @brief Initializes an instance of the ACES (Arithmetic Channel Encryption
  * Scheme).
